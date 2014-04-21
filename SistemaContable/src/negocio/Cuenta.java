@@ -14,24 +14,13 @@ public class Cuenta {
 public String codigo;
 public String numero;
 public String descripcion;
-public String idtipo;
-public String idcategoria;
+public String categoria;
+public int idtipo;
 public String saldoinicial;
 public String saldofinal;
-public String cuentapadre;
+public int cuentapadre;
 
     public Cuenta() {
-    }
-
-    public Cuenta(String codigo, String numero, String descripcion, String idtipo, String idcategoria, String saldoinicial, String saldofinal, String cuentapadre) {
-        this.codigo = codigo;
-        this.numero = numero;
-        this.descripcion = descripcion;
-        this.idtipo = idtipo;
-        this.idcategoria = idcategoria;
-        this.saldoinicial = saldoinicial;
-        this.saldofinal = saldofinal;
-        this.cuentapadre = cuentapadre;
     }
 
     public String getCodigo() {
@@ -58,20 +47,20 @@ public String cuentapadre;
         this.descripcion = descripcion;
     }
 
-    public String getIdtipo() {
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getIdtipo() {
         return idtipo;
     }
 
-    public void setIdtipo(String idtipo) {
+    public void setIdtipo(int idtipo) {
         this.idtipo = idtipo;
-    }
-
-    public String getIdcategoria() {
-        return idcategoria;
-    }
-
-    public void setIdcategoria(String idcategoria) {
-        this.idcategoria = idcategoria;
     }
 
     public String getSaldoinicial() {
@@ -90,11 +79,11 @@ public String cuentapadre;
         this.saldofinal = saldofinal;
     }
 
-    public String getCuentapadre() {
+    public int getCuentapadre() {
         return cuentapadre;
     }
 
-    public void setCuentapadre(String cuentapadre) {
+    public void setCuentapadre(int cuentapadre) {
         this.cuentapadre = cuentapadre;
     }
 

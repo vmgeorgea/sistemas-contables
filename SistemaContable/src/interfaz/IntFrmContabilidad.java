@@ -101,7 +101,7 @@ Object parent;
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(DesktopPaneLibroDiario)
+            .addComponent(DesktopPaneLibroDiario, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jTabbedPane1.addTab("Libro Diario", jPanel2);
@@ -317,7 +317,7 @@ Object parent;
     private javax.swing.JDesktopPane DesktopPaneBalanceResultados;
     private javax.swing.JDesktopPane DesktopPaneLibroDiario;
     private javax.swing.JDesktopPane DesktopPaneLibroMayor;
-    private javax.swing.JDesktopPane DesktopPanePlanCuentas;
+    public javax.swing.JDesktopPane DesktopPanePlanCuentas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
