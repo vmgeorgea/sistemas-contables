@@ -6,17 +6,32 @@
 
 package interfaz;
 
+import datos.conexionBD;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author user
  */
 public class IntFrmLibroMayor extends javax.swing.JInternalFrame {
 Object parent;
+DefaultTableModel tablaLibroMayor;
+DefaultTableModel tablaCuentas;
     /**
      * Creates new form IntFrmLibroMayor
      */
     public IntFrmLibroMayor() {
+        String nombresColumna[] ={"CUENTA","DEBE","HABER","DEBITO","CREDITO","SALDO"};//nombres de la columna
+        tablaLibroMayor= new DefaultTableModel(null, nombresColumna);
+        String nombresColumna1[] ={"NUMMERO CUENTA","DESCRIPCION"};//nombres de la columna
+        tablaCuentas= new DefaultTableModel(null, nombresColumna1);
         initComponents();
+        llenarTablaCuentas();
+        
     }
 
     /**
@@ -28,23 +43,102 @@ Object parent;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblLibroMayor = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblCuenta = new javax.swing.JTable();
+
         setBorder(null);
+
+        tblLibroMayor.setModel(tablaLibroMayor);
+        jScrollPane1.setViewportView(tblLibroMayor);
+
+        tblCuenta.setModel(tablaCuentas);
+        tblCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCuentaMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblCuenta);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 410, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 281, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblCuentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCuentaMouseClicked
+
+        int fila = tblCuenta.rowAtPoint(evt.getPoint());
+        int columna = 0;
+        
+        if ((fila > -1) && (columna > -1)){
+               String cod=String.valueOf(tblCuenta.getValueAt(fila, columna));
+               llenarTablaLibroMayor(cod);
+        }
+// TODO add your handling code here:
+    }//GEN-LAST:event_tblCuentaMouseClicked
+
+    public void llenarTablaLibroMayor(String cod){
+        
+        conexionBD con = new conexionBD();
+        ResultSet rs = null;
+        
+        rs = con.consultar("select cuenta.descripcionCuenta, transaccion.debeTransaccion,transaccion.haberTransaccion from cuenta,transaccion where transaccion.Cuenta_idCuenta="+cod+" and cuenta.idCuenta="+cod);
+       tablaLibroMayor.setRowCount(0);
+        
+        try {
+            while(rs.next()){
+                Object fila[] = {rs.getString(1),rs.getString(2),rs.getString(3)};
+                tablaLibroMayor.addRow(fila);            
+            }
+            Object objetosColumna[] ={"","",};
+            tablaLibroMayor.addRow(objetosColumna);
+        } catch (SQLException ex) {
+            Logger.getLogger(IntFrmPlanCuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void llenarTablaCuentas(){
+        conexionBD con = new conexionBD();
+        ResultSet rs = null;
+        
+        rs = con.consultar("select numeroCuenta,descripcionCuenta from cuenta");
+       tablaCuentas.setRowCount(0);
+        
+        try {
+            while(rs.next()){
+                Object fila[] = {rs.getString(1),rs.getString(2)};
+                tablaCuentas.addRow(fila);            
+            }
+            Object objetosColumna[] ={"","",};
+            tablaCuentas.addRow(objetosColumna);
+        } catch (SQLException ex) {
+            Logger.getLogger(IntFrmPlanCuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblCuenta;
+    private javax.swing.JTable tblLibroMayor;
     // End of variables declaration//GEN-END:variables
 }
