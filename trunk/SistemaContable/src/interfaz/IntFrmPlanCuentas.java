@@ -6,17 +6,34 @@
 
 package interfaz;
 
+import datos.conexionBD;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author user
  */
 public class IntFrmPlanCuentas extends javax.swing.JInternalFrame {
 Object parent;
+DefaultTableModel tablaCuentas;
     /**
      * Creates new form IntFramePlanCuentad
      */
     public IntFrmPlanCuentas() {
+        String nombresColumna[] ={"Numero","Descripcion","Categoria","Saldo Incial","Saldo Final","Cuenta","Tipo"};//nombres de la columna
+        tablaCuentas= new DefaultTableModel(null, nombresColumna);
         initComponents();
+        llenarTablaCuentas();
     }
 
     /**
@@ -28,23 +45,49 @@ Object parent;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        menuPlanCuentas = new javax.swing.JPopupMenu();
+        Agregar = new javax.swing.JMenuItem();
+        Quitar = new javax.swing.JMenuItem();
+        Modificar = new javax.swing.JMenuItem();
+        tblPlanCluentas = new javax.swing.JScrollPane();
+        tblPlanCuentas = new javax.swing.JTable();
+
+        Agregar.setText("Agregar");
+        Agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AgregarActionPerformed(evt);
+            }
+        });
+        menuPlanCuentas.add(Agregar);
+
+        Quitar.setText("Quitar");
+        menuPlanCuentas.add(Quitar);
+
+        Modificar.setText("Modificar");
+        menuPlanCuentas.add(Modificar);
 
         setBorder(null);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        tblPlanCluentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPlanCluentasMouseClicked(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tblPlanCluentasMouseEntered(evt);
+            }
+        });
+
+        tblPlanCuentas.setModel(tablaCuentas);
+        tblPlanCuentas.setComponentPopupMenu(menuPlanCuentas);
+        tblPlanCuentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPlanCuentasMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblPlanCuentasMousePressed(evt);
+            }
+        });
+        tblPlanCluentas.setViewportView(tblPlanCuentas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -52,23 +95,82 @@ Object parent;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addComponent(tblPlanCluentas, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addComponent(tblPlanCluentas, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblPlanCuentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPlanCuentasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblPlanCuentasMouseClicked
+
+    private void tblPlanCluentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPlanCluentasMouseClicked
+
+    }//GEN-LAST:event_tblPlanCluentasMouseClicked
+
+    private void tblPlanCluentasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPlanCluentasMouseEntered
+          // TODO add your handling code here:
+    }//GEN-LAST:event_tblPlanCluentasMouseEntered
+
+    private void tblPlanCuentasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPlanCuentasMousePressed
+
+        tblPlanCuentas.addMouseListener(new MouseAdapter() {
+                                   public void mousePressed(MouseEvent e) {
+                                            if ( SwingUtilities.isRightMouseButton(e)) {
+                                               Point p = e.getPoint();
+                                               int rowNumber = tblPlanCuentas.rowAtPoint( p );
+                                               ListSelectionModel modelo = tblPlanCuentas.getSelectionModel();
+                                               modelo.setSelectionInterval( rowNumber, rowNumber );
+                                           }
+                                       
+                                   }
+                               }
+        );
+       // TODO add your handling code here:
+    }//GEN-LAST:event_tblPlanCuentasMousePressed
+
+    private void AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActionPerformed
+        FrmCuenta ft = new FrmCuenta(null, true);
+        ft.parent = this;
+        ft.setLocationRelativeTo(null);
+        ft.setVisible(true);       // TODO add your handling code here:
+    }//GEN-LAST:event_AgregarActionPerformed
+
+    public void llenarTablaCuentas(){
+        conexionBD con = new conexionBD();
+        ResultSet rs = null;
+        
+        rs = con.consultar("select numeroCuenta,descripcionCuenta,categoriaCuenta,saldoInicialCuenta, saldoFinalCuenta, Cuenta_idCuenta, Tipo_idTipo from cuenta");
+       tablaCuentas.setRowCount(0);
+        
+        try {
+            while(rs.next()){
+                Object fila[] = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getInt(6),rs.getInt(7)};
+                tablaCuentas.addRow(fila);            
+            }
+            Object objetosColumna[] ={"","","","","","",""};
+            tablaCuentas.addRow(objetosColumna);
+        } catch (SQLException ex) {
+            Logger.getLogger(IntFrmPlanCuentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JMenuItem Agregar;
+    private javax.swing.JMenuItem Modificar;
+    private javax.swing.JMenuItem Quitar;
+    private javax.swing.JPopupMenu menuPlanCuentas;
+    private javax.swing.JScrollPane tblPlanCluentas;
+    private javax.swing.JTable tblPlanCuentas;
     // End of variables declaration//GEN-END:variables
 }
